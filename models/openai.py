@@ -2,10 +2,12 @@ from langchain_openai import ChatOpenAI
 from langchain.schema import HumanMessage, SystemMessage, AIMessage
 from typing import Any, Mapping, Optional
 from utils.preprocessing import remove_comments_from_lines
+import re
+from dotenv import load_dotenv
 
 class CustomGpt:
     """LangChain LLM"""
-
+    
     def __init__(
         self,
         model_name: Optional[str] = "gpt-4o-mini-2024-07-18",
@@ -25,7 +27,8 @@ class CustomGpt:
         self.verbose = verbose
         self.temperature = temperature
         self.text = ""
-
+        load_dotenv()
+        
         # model: environment에 설정
         self.llm = ChatOpenAI(model=model_name, temperature=temperature)  
 
@@ -56,7 +59,7 @@ class CustomGpt:
 
         return response
     
-def llm_response(llm_model: str, system_prompt: str, user_prompt: str, stream: bool = False) -> OpenAI:
+def llm_response(llm_model: str, system_prompt: str, user_prompt: str, stream: bool = False):
     """프롬프트에 대한 LLM의 응답값을 반환한다.
 
     Args:
